@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ToDoListDBModelStoreContainer" CdmEntityContainer="ToDoListDBEntities">
+    <EntitySetMapping Name="Items">
+      <EntityTypeMapping TypeName="ToDoListDBModel.Item">
+        <MappingFragment StoreEntitySet="Item">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="CreateItem" FunctionName="ToDoListDBModel.Store.CreateItem" />
+    <FunctionImportMapping FunctionImportName="DeleteItem" FunctionName="ToDoListDBModel.Store.DeleteItem" />
+    <FunctionImportMapping FunctionImportName="ReadItems" FunctionName="ToDoListDBModel.Store.ReadItems">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="ToDoListDBModel.ReadItems_Result">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Priority" ColumnName="Priority" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="UpdateItem" FunctionName="ToDoListDBModel.Store.UpdateItem" />
+  </EntityContainerMapping>
+</Mapping>
