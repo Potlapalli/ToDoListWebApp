@@ -1,0 +1,72 @@
+﻿@using Kendo.Mvc.UI
+@using ToDoListWebApp.Models
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container-fluid">
+    <br/>
+    <br/>
+    <div class="row">
+        <div class="col-xs-18 col-md-12">
+
+            @(Html.Kendo().Grid<ItemModel>()
+                  .Name("grid")
+                  .Columns(columns =>
+                  {
+                      columns.Bound(c => c.Id).Hidden();
+                      columns.Bound(c => c.Name);
+                      columns.Bound(c => c.Priority).EditorTemplateName("Priorities").ClientTemplate("#:Priority#");
+                      columns.Bound(c => c.Status).EditorTemplateName("Statuses").ClientTemplate("#:Status#");
+                      columns.Command(command =>
+                      {
+                          command.Edit();
+                          command.Destroy();
+                      }).Width(250);
+                  })
+                  .ToolBar(toolbar => toolbar.Create())
+                  .Editable(editable => editable.Mode(GridEditMode.InLine).ConfirmDelete("test").DisplayDeleteConfirmation("Do you want to delete"))
+                  .Pageable()
+                  .Sortable()
+                  .Scrollable()
+                  .HtmlAttributes(new { style = "height:550px;" })
+                  .Pageable(pageable => pageable
+                      .Refresh(true)
+                      .PageSizes(true)
+                      .ButtonCount(5))
+                  .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model => model.Id(p => p.Id))
+                      .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                      .Create(update => update.Action("CreateItem", "Home"))
+                      .Read(read => read.Action("ReadItems", "Home"))
+                      .Update(update => update.Action("UpdateItem", "Home"))
+                      .Destroy(update => update.Action("DeleteItem", "Home"))
+                      .PageSize(20)
+                      
+                  )
+                  )
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function error_handler(e) {
+        if (e.errors) {
+            var message = "Errors:\n";
+            $.each(e.errors, function (key, value) {
+                if ('errors' in value) {
+                    $.each(value.errors, function () {
+                        message += this + "\n";
+                    });
+                }
+            });
+            alert(message);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    function sync_handler(e) {
+        this.read();
+    }
+</script>
